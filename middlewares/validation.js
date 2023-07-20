@@ -3,14 +3,7 @@ const validUrl = require('valid-url');
 
 const createUserJoiValidate = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom((value, helper) => {
-      if (!validUrl.isWebUri(value)) {
-        return helper.error('Введите URL');
-      }
-      return value;
-    }),
+    name: Joi.string().min(2).max(30).required(),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
@@ -23,54 +16,54 @@ const loginJoiValidate = celebrate({
   }),
 });
 
-const getUserByIdJoiValidate = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().alphanum().hex().length(24),
-  }),
-});
-
 const updateUserJoiValidate = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
+    email: Joi.string().required().email(),
   }),
 });
 
-const updateUserAvatarJoiValidate = celebrate({
+const createMovieJoiValidate = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().custom((value, helper) => {
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
+    image: Joi.string().required().custom((value, helper) => {
       if (!validUrl.isWebUri(value)) {
         return helper.error('Введите URL');
       }
       return value;
     }),
-  }),
-});
-
-const createCardJoiValidate = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    link: Joi.string().required().custom((value, helper) => {
+    trailerLink: Joi.string().required().custom((value, helper) => {
       if (!validUrl.isWebUri(value)) {
         return helper.error('Введите URL');
       }
       return value;
     }),
+    thumbnail: Joi.string().required().custom((value, helper) => {
+      if (!validUrl.isWebUri(value)) {
+        return helper.error('Введите URL');
+      }
+      return value;
+    }),
+    movieId: Joi.number().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 });
 
-const checkCardIdJoiValidate = celebrate({
+const checkMovieIdJoiValidate = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum().hex().length(24),
+    movieId: Joi.string().alphanum().hex().length(24),
   }),
 });
 
 module.exports = {
   createUserJoiValidate,
   loginJoiValidate,
-  getUserByIdJoiValidate,
   updateUserJoiValidate,
-  updateUserAvatarJoiValidate,
-  createCardJoiValidate,
-  checkCardIdJoiValidate,
+  createMovieJoiValidate,
+  checkMovieIdJoiValidate,
 };

@@ -15,7 +15,7 @@ const router = require('./routes/index');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
   family: 4,
 });
@@ -28,7 +28,8 @@ const limiter = rateLimit({
 });
 
 const corsOptions = {
-  origin: 'https://mesto.tati-tati.nomoredomains.work',
+  origin: 'http://localhost:3000',
+  // origin: 'https://mesto.tati-tati.nomoredomains.work',
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -40,6 +41,7 @@ app.use(requestLogger);
 app.use(limiter);
 app.use(helmet());
 app.disable('x-powered-by');
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');

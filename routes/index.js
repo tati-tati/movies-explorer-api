@@ -7,7 +7,7 @@ const CustomError = require('../utils/errors');
 const { ERROR_NOT_FOUND } = require('../utils/constants');
 
 const userRouter = require('./usersRoutes');
-const cardRouter = require('./cardsRoutes');
+const movieRouter = require('./moviesRoutes');
 
 // роуты
 
@@ -21,7 +21,7 @@ router.get('/signout', logout);
 router.use(auth);
 
 router.use(userRouter);
-router.use(cardRouter);
+router.use(movieRouter);
 router.use(() => {
   throw new CustomError(ERROR_NOT_FOUND, 'Страница не найдена');
 });

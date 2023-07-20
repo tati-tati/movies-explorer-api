@@ -12,15 +12,6 @@ const {
   ERROR_CONFLICT,
 } = require('../utils/constants');
 
-const getUsers = async (req, res, next) => {
-  try {
-    const users = await User.find({});
-    res.send(users);
-  } catch (err) {
-    next(err);
-  }
-};
-
 const getCurrentUser = async (req, res, next) => {
   try {
     const id = req.user._id;
@@ -59,25 +50,23 @@ const getUserById = async (req, res, next) => {
 const createUser = async (req, res, next) => {
   try {
     const {
-      name, about, avatar, email, password,
+      name, email, password,
     } = req.body;
-    console.log(email, password);
-    if (!email || !password) {
+    console.log(name, email, password);
+    if (!name || !email || !password) {
       throw new CustomError(ERROR_NOT_FOUND, 'Переданы неверные данные');
     }
 
     const passHashed = await bcrypt.hash(req.body.password, 10);
 
     const user = await User.create({
-      name, about, avatar, email, password: passHashed,
+      name, email, password: passHashed,
     });
     if (!user) {
       throw new CustomError(ERROR_NOT_FOUND, 'Пользователь не создан');
     }
     res.status(201).send({
       name: user.name,
-      about: user.about,
-      avatar: user.avatar,
       email,
     });
   } catch (err) {
@@ -95,35 +84,14 @@ const createUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const { name, about } = req.body;
+    const { name, email } = req.body;
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { name, about },
+      { name, email },
       { new: true, runValidators: true },
     );
     if (!user) {
       throw new CustomError(ERROR_NOT_FOUND, 'Пользователь не создан');
-    }
-    res.send(user);
-  } catch (err) {
-    if (err.name === 'CastError' || err.name === 'ValidationError') {
-      next(new CustomError(ERROR_BAD_REQUEST, 'Переданы неверные данные'));
-      return;
-    }
-    next(err);
-  }
-};
-
-const updateUserAvatar = async (req, res, next) => {
-  try {
-    const { avatar } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { avatar },
-      { new: true, runValidators: true },
-    );
-    if (!user) {
-      throw new CustomError(ERROR_NOT_FOUND, 'Пользователь не найден');
     }
     res.send(user);
   } catch (err) {
@@ -171,5 +139,5 @@ const logout = async (req, res, next) => {
 };
 
 module.exports = {
-  getUsers, getCurrentUser, getUserById, createUser, updateUser, updateUserAvatar, login, logout,
+  getCurrentUser, getUserById, createUser, updateUser, login, logout,
 };
