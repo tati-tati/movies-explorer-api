@@ -1,5 +1,10 @@
 # movies-explorer-api
 API для дипломного проекта
+ссылка на репозитарий
+https://github.com/tati-tati/movies-explorer-api
+Публичный IPv4 
+158.160.116.79
+ссылка на домен api
 https://api.tati-tati.nomoredomains.xyz
 ## Роуты и запросы:
 * GET /users/me возвращает информацию о пользователе (email и имя);
