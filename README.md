@@ -1,5 +1,6 @@
 # movies-explorer-api
 API для дипломного проекта
+https://api.tati-tati.nomoredomains.xyz
 ## Роуты и запросы:
 * GET /users/me возвращает информацию о пользователе (email и имя);
 
