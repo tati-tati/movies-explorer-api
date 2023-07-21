@@ -8,7 +8,7 @@ const {
 
 const getMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({ owner: req.user._id }); // нужен параметр поиска фильмов?
+    const movies = await Movie.find({ owner: req.user._id });
     res.send(movies);
   } catch (err) {
     next(err);
@@ -17,7 +17,6 @@ const getMovies = async (req, res, next) => {
 
 const createMovie = async (req, res, next) => {
   try {
-    // важен порядок?
     const {
       country,
       director,
@@ -46,12 +45,13 @@ const createMovie = async (req, res, next) => {
       nameRU,
       nameEN,
     });
-    console.log('сообщение из консоли с фильмом', movie);
+    // console.log('сообщение из консоли с фильмом', movie);
     if (!movie) {
       throw new CustomError(ERROR_NOT_FOUND, 'Неверные данные');
     }
     res.status(201).send(movie);
   } catch (err) {
+    // console.log(err)
     if (err.name === 'ValidationError') {
       next(new CustomError(ERROR_BAD_REQUEST, 'Переданы неверные данные2'));
       return;
