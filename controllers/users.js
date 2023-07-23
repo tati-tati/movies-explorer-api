@@ -91,10 +91,14 @@ const updateUser = async (req, res, next) => {
       { new: true, runValidators: true },
     );
     if (!user) {
-      throw new CustomError(ERROR_NOT_FOUND, 'Пользователь не создан');
+      throw new CustomError(ERROR_NOT_FOUND, 'Пользователь не найден');
     }
     res.send(user);
   } catch (err) {
+    if (err.code === 11000) {
+      next(new CustomError(ERROR_CONFLICT, 'Пользователь с таким email уже существует'));
+      return;
+    }
     if (err.name === 'CastError' || err.name === 'ValidationError') {
       next(new CustomError(ERROR_BAD_REQUEST, 'Переданы неверные данные'));
       return;

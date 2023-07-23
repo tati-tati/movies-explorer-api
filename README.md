@@ -6,6 +6,8 @@ https://github.com/tati-tati/movies-explorer-api
 158.160.116.79
 ссылка на домен api
 https://api.tati-tati.nomoredomains.xyz
+
+https://disk.yandex.ru/d/xR7sZUhngr4dvQ - макет
 ## Роуты и запросы:
 * GET /users/me возвращает информацию о пользователе (email и имя);
 
