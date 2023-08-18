@@ -3,7 +3,7 @@ API для дипломного проекта
 ссылка на репозитарий
 https://github.com/tati-tati/movies-explorer-api
 Публичный IPv4 
-158.160.116.79
+158.160.57.36
 ссылка на домен api
 https://api.tati-tati.nomoredomains.xyz
 
