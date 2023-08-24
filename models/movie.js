@@ -60,14 +60,10 @@ const movieSchema = new mongoose.Schema({
   nameRU: {
     type: String,
     required: [true, 'Поле должно быть заполнено'],
-    minlength: 2,
-    maxlength: 30,
   },
   nameEN: {
     type: String,
     required: [true, 'Поле должно быть заполнено'],
-    minlength: 2,
-    maxlength: 30,
   },
 });
 
