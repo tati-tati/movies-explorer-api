@@ -54,7 +54,10 @@ const createUser = async (req, res, next) => {
     } = req.body;
     console.log(name, email, password);
     if (!name || !email || !password) {
-      throw new CustomError(ERROR_NOT_FOUND, 'Переданы неверные данные');
+      throw new CustomError(
+        ERROR_NOT_FOUND,
+        'При регистрации пользователя произошла ошибка.',
+      );
     }
 
     const passHashed = await bcrypt.hash(req.body.password, 10);
@@ -63,7 +66,10 @@ const createUser = async (req, res, next) => {
       name, email, password: passHashed,
     });
     if (!user) {
-      throw new CustomError(ERROR_NOT_FOUND, 'Пользователь не создан');
+      throw new CustomError(
+        ERROR_NOT_FOUND,
+        'При регистрации пользователя произошла ошибка.',
+      );
     }
     res.status(201).send({
       name: user.name,
@@ -75,7 +81,12 @@ const createUser = async (req, res, next) => {
       return;
     }
     if (err.name === 'ValidationError') {
-      next(new CustomError(ERROR_NOT_FOUND, 'Переданы неверные данные'));
+      next(
+        new CustomError(
+          ERROR_NOT_FOUND,
+          'При регистрации пользователя произошла ошибка.',
+        ),
+      );
       return;
     }
     next(err);
@@ -91,7 +102,10 @@ const updateUser = async (req, res, next) => {
       { new: true, runValidators: true },
     );
     if (!user) {
-      throw new CustomError(ERROR_NOT_FOUND, 'Пользователь не найден');
+      throw new CustomError(
+        ERROR_NOT_FOUND,
+        'При обновлении профиля произошла ошибка.',
+      );
     }
     res.send(user);
   } catch (err) {
@@ -100,7 +114,12 @@ const updateUser = async (req, res, next) => {
       return;
     }
     if (err.name === 'CastError' || err.name === 'ValidationError') {
-      next(new CustomError(ERROR_BAD_REQUEST, 'Переданы неверные данные'));
+      next(
+        new CustomError(
+          ERROR_BAD_REQUEST,
+          'При обновлении профиля произошла ошибка.',
+        ),
+      );
       return;
     }
     next(err);
@@ -115,7 +134,10 @@ const login = async (req, res, next) => {
     const isMatched = await bcrypt.compare(password, user.password);
 
     if (!user || !isMatched) {
-      throw new CustomError(ERROR_UNAUTHORIZED, 'Переданы неверные данные');
+      throw new CustomError(
+        ERROR_UNAUTHORIZED,
+        'Вы ввели неправильный логин или пароль.',
+      );
     }
 
     const token = jwt.sign(
@@ -130,7 +152,12 @@ const login = async (req, res, next) => {
     res.cookie('jwtToken', token, cookieOption); // maxAge: 24 hours
     res.send({ message: 'Вход выполнен' });
   } catch (err) {
-    next(new CustomError(ERROR_UNAUTHORIZED, 'Переданы неверные данные'));
+    next(
+      new CustomError(
+        ERROR_UNAUTHORIZED,
+        'При авторизации произошла ошибка. Токен не передан или передан не в том формате.',
+      ),
+    );
   }
 };
 

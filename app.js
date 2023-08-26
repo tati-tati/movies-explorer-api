@@ -17,14 +17,23 @@ const app = express();
 
 const { BD_NAME, NODE_ENV } = process.env;
 
-mongoose.connect(`mongodb://localhost:27017/${NODE_ENV === 'production' ? BD_NAME : 'local'}`, {
-  useNewUrlParser: true,
-  family: 4,
-});
+mongoose.connect(
+  `mongodb://localhost:27017/${NODE_ENV === 'production' ? BD_NAME : 'local'}`,
+  {
+    useNewUrlParser: true,
+    family: 4,
+  },
+);
 
 const corsOptions = {
   // origin: 'http://localhost:3001',
-  origin: 'https://tati-tati.nomoredomains.xyz',
+  origin: [
+    'https://tati-tati.nomoredomains.xyz',
+    'http://tati-tati.nomoredomains.xyz',
+    'http://localhost:3001',
+    'http://localhost:3000',
+  ],
+
   credentials: true,
 };
 app.use(cors(corsOptions));

@@ -22,8 +22,8 @@ router.use(auth);
 
 router.use(userRouter);
 router.use(movieRouter);
-router.use(() => {
-  throw new CustomError(ERROR_NOT_FOUND, 'Страница не найдена');
+router.use((req, res, next) => {
+  next(new CustomError(ERROR_NOT_FOUND, 'Страница не найдена'));
 });
 
 module.exports = router;
